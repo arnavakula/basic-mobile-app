@@ -12,15 +12,32 @@
                 hint_text: "Password"
             Button:
                 text: "Login"
-        
         GridLayout:
             cols:2
             Button:
                 text: "Forgot Password?"
             Button:
                 text: "Sign Up"
+                on_press: root.sign_up()
+
+<SignUpScreen>:
+    GridLayout:
+        cols: 1
+        Button:
+            text: "Back"
+            on_press: root.login()
+        Label:
+            text: "Sign up to start using this app!"
+        TextInput:
+            hint_text: "Username"
+        TextInput:
+            hint_text: "Password"
+        Button:
+            text: "Create Account"
+
  
 <RootWidget>:
     LoginScreen:
-        name:"login_screen"
- 
+        name: "login_screen"
+    SignUpScreen:
+        name: "sign_up_screen"
