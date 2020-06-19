@@ -1,5 +1,8 @@
-from datetime import datetime
+import glob
 import json
+import random
+from datetime import datetime
+from pathlib import Path
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -9,6 +12,7 @@ Builder.load_file('design.kv')
  
 class LoginScreen(Screen):
     def sign_up(self):
+        self.manager.transition.direction = 'left'
         self.manager.current = 'sign_up_screen'
 
     def login(self, name, pword):
@@ -25,6 +29,16 @@ class LoginSuccessScreen(Screen):
         self.manager.transition.direction = 'right'
         self.manager.current = 'login_screen'
 
+    def display_quote(self, feeling):
+        feeling = feeling.lower()
+        valid_feelings = [Path(filename).stem for filename in glob.glob('quotes/*txt')]
+        if feeling in valid_feelings:
+            with open(f'quotes/{feeling}.txt') as f:
+                quotes = f.readlines()
+            self.ids.quote.text = random.choice(quotes)
+        else: 
+            self.ids.quote.text = 'Sorry, that is not a valid feeling in this release.'
+
 class SignUpScreen(Screen):
     def to_login_screen(self):
         self.manager.transition.direction = 'right'
@@ -33,12 +47,13 @@ class SignUpScreen(Screen):
         with open('users.json') as f:
             users = json.load(f)   
         
-        users[name] = {'username': name, 'password': pword, 'created': datetime.now().strftime('%m-%d-%Y')}  
-
-        with open('users.json', 'w') as f:
-            json.dump(users, f)
-
-        self.manager.current = 'sign_up_success_screen'
+        if name in users:
+            self.ids.sign_up_error.text = "Sorry, that username already exists. Please enter another one."
+        else:
+            users[name] = {'username': name, 'password': pword, 'created': datetime.now().strftime('%m-%d-%Y')}  
+            with open('users.json', 'w') as f:
+                json.dump(users, f)
+            self.manager.current = 'sign_up_success_screen'
 
 class SignUpSuccessScreen(Screen):
     def to_login_screen(self):

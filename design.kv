@@ -4,26 +4,41 @@
         cols: 1
         GridLayout:
             cols: 1
+            padding: 15, 15
+            spacing: 20, 20
             Label:
                 text: "User Login"
+                font_size: "20sp"
             TextInput:
                 id: username
                 hint_text: "Username"
             TextInput:
                 id: password
                 hint_text: "Password"
-            Button:
-                text: "Login"
-                on_press: root.login(root.ids.username.text, root.ids.password.text)
+            RelativeLayout:
+                Button:
+                    text: "Login"
+                    size_hint: 0.3, 0.5
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+                    on_press: root.login(root.ids.username.text, root.ids.password.text)
             Label:
                 id: login_error
                 text: ""
         GridLayout:
             cols:2
+            size_hint: 0.2, 0.2
+            padding: 10, 10
+            spacing: 10, 0
             Button:
+                color: 0.1, 0.7, 1, 1
                 text: "Forgot Password?"
+                background_color: 0, 0, 0, 0
+                opacity: 1 if self.state == 'normal' else 0.5
             Button:
+                color: 0.1, 0.7, 1, 1
                 text: "Sign Up"
+                background_color: 0, 0, 0, 0
+                opacity: 1 if self.state == 'normal' else 0.5
                 on_press: root.sign_up()
 
 <LoginSuccessScreen>:
@@ -33,31 +48,58 @@
             text: "Logout"
             on_press: root.log_out()
         Label:
-            hint_text: "How do you feel?"
+            text: "How do you feel?"
         TextInput:
-            text: "Things to try: happy, sad, unloved..."
+            id: feeling
+            hint_text: "Things to try: happy, sad, unloved..."
         Button:
             text: "Enlighten me"
+            on_press: root.display_quote(root.ids.feeling.text)
         Label: 
-            text: "Quote"
+            id: quote
+            text: ""
 
 <SignUpScreen>:
     GridLayout:
         cols: 1
-        Button:
-            text: "Back"
-            on_press: root.to_login_screen()
-        Label:
-            text: "Sign up to start using this app!"
-        TextInput:
-            id: username
-            hint_text: "Username"
-        TextInput:
-            id: password
-            hint_text: "Password"
-        Button:
-            text: "Create Account"
-            on_press: root.add_user(root.ids.username.text, root.ids.password.text)
+        GridLayout:
+            cols: 1
+            size_hint: 0.6, 0.6
+            padding: 20, 20
+            spacing: 20, 20
+            Label:
+                text: "Sign up to start using this app!"
+            TextInput:
+                id: username
+                hint_text: "Username"
+                size_hint: 0.3, 0.5 
+            TextInput:
+                id: password
+                hint_text: "Password"
+                size_hint: 0.3, 0.5 
+            Label:
+                size_hint: 0.2, 0.2
+                id: sign_up_error
+                text: ""
+        GridLayout:
+            cols:2
+            size_hint: 0.3, 0.3
+            padding: 10, 10
+            spacing: 10, 0
+            Button:
+                color: 0.1, 0.7, 1, 1
+                background_color: 0, 0, 0, 0
+                opacity: 1 if self.state == 'normal' else 0.5
+                text: "Back"
+                size_hint: 0.3, 0.5 
+                on_press: root.to_login_screen()
+            Button:
+                color: 0.1, 0.7, 1, 1
+                background_color: 0, 0, 0, 0
+                opacity: 1 if self.state == 'normal' else 0.5
+                size_hint: 0.3, 0.5    
+                text: "Create Account"
+                on_press: root.add_user(root.ids.username.text, root.ids.password.text)
 
 <SignUpSuccessScreen>:
     GridLayout:
