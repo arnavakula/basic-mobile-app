@@ -11,9 +11,22 @@ class LoginScreen(Screen):
     def sign_up(self):
         self.manager.current = 'sign_up_screen'
 
+    def login(self, name, pword):
+        with open('users.json', 'r') as f:
+            users = json.load(f)
+        if name in users.keys() and users[name]['password'] == pword:
+            self.manager.current = 'login_success_screen'
+        else:
+            self.ids.login_error.text = "The username you entered does not match the password."
+
+
+class LoginSuccessScreen(Screen):
+    def log_out(self):
+        self.manager.transition.direction = 'right'
+        self.manager.current = 'login_screen'
 
 class SignUpScreen(Screen):
-    def login(self):
+    def to_login_screen(self):
         self.manager.transition.direction = 'right'
         self.manager.current = 'login_screen'
     def add_user(self, name, pword):
@@ -28,7 +41,7 @@ class SignUpScreen(Screen):
         self.manager.current = 'sign_up_success_screen'
 
 class SignUpSuccessScreen(Screen):
-    def login(self):
+    def to_login_screen(self):
         self.manager.transition.direction = 'right'
         self.manager.current = 'login_screen'
     pass

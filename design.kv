@@ -7,11 +7,17 @@
             Label:
                 text: "User Login"
             TextInput:
+                id: username
                 hint_text: "Username"
             TextInput:
+                id: password
                 hint_text: "Password"
             Button:
                 text: "Login"
+                on_press: root.login(root.ids.username.text, root.ids.password.text)
+            Label:
+                id: login_error
+                text: ""
         GridLayout:
             cols:2
             Button:
@@ -20,12 +26,27 @@
                 text: "Sign Up"
                 on_press: root.sign_up()
 
+<LoginSuccessScreen>:
+    GridLayout:
+        cols: 1
+        Button:
+            text: "Logout"
+            on_press: root.log_out()
+        Label:
+            hint_text: "How do you feel?"
+        TextInput:
+            text: "Things to try: happy, sad, unloved..."
+        Button:
+            text: "Enlighten me"
+        Label: 
+            text: "Quote"
+
 <SignUpScreen>:
     GridLayout:
         cols: 1
         Button:
             text: "Back"
-            on_press: root.login()
+            on_press: root.to_login_screen()
         Label:
             text: "Sign up to start using this app!"
         TextInput:
@@ -45,9 +66,8 @@
             text: "You have signed up successfully!"
         Button:
             text: "Back to Login"
-            on_press: root.login()
-
- 
+            on_press: root.to_login_screen()
+        
 <RootWidget>:
     LoginScreen:
         name: "login_screen"
@@ -55,3 +75,5 @@
         name: "sign_up_screen"
     SignUpSuccessScreen:
         name: "sign_up_success_screen"
+    LoginSuccessScreen:
+        name: "login_success_screen"
