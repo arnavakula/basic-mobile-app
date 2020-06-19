@@ -29,11 +29,23 @@
         Label:
             text: "Sign up to start using this app!"
         TextInput:
+            id: username
             hint_text: "Username"
         TextInput:
+            id: password
             hint_text: "Password"
         Button:
             text: "Create Account"
+            on_press: root.add_user(root.ids.username.text, root.ids.password.text)
+
+<SignUpSuccessScreen>:
+    GridLayout:
+        cols: 1
+        Label:
+            text: "You have signed up successfully!"
+        Button:
+            text: "Back to Login"
+            on_press: root.login()
 
  
 <RootWidget>:
@@ -41,3 +53,5 @@
         name: "login_screen"
     SignUpScreen:
         name: "sign_up_screen"
+    SignUpSuccessScreen:
+        name: "sign_up_success_screen"
