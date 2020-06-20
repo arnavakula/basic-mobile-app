@@ -30,7 +30,9 @@ class LoginScreen(Screen):
             self.manager.current = 'login_success_screen'
         else:
             self.ids.login_error.text = "The username you entered does not match the password."
-
+    
+    def forgot_password(self):
+        self.manager.current = 'forgot_password_screen'
 
 class LoginSuccessScreen(Screen):
     def log_out(self):
@@ -75,8 +77,25 @@ class SignUpSuccessScreen(Screen):
     def to_login_success_screen(self):
         self.manager.transition.direction = 'left'
         self.manager.current = 'login_success_screen'
-    pass
+
+class ForgotPasswordScreen(Screen):
+    def reset_account(self, name, pword):
+        name = name.strip()
+        pword = pword.strip()
+
+        with open('users.json', 'r') as f:
+            users = json.load(f)
+
+        if name not in users:
+            self.ids.forgot_password_error.text = 'That username is not registered with an account'
+        else:
+            users[name]['password'] = pword 
+            with open('users.json', 'w') as f:
+                json.dump(users, f)
+            self.manager.transition.direction = 'right'
+            self.manager.current = 'login_screen'
         
+
 class RootWidget(ScreenManager):
     pass
 

@@ -34,6 +34,7 @@
                 text: "Forgot Password?"
                 background_color: 0, 0, 0, 0
                 opacity: 1 if self.state == 'normal' else 0.5
+                on_press: root.forgot_password()
             Button:
                 color: 0.1, 0.7, 1, 1
                 text: "Sign Up"
@@ -120,6 +121,24 @@
         Button:
             text: "Go To App"
             on_press: root.to_login_success_screen()
+
+<ForgotPasswordScreen>:
+    GridLayout:
+        cols: 1
+        Label:
+            text: "Enter your existing username and a new password to reset your account."
+        TextInput:
+            id: username
+            hint_text: "Existing Username"
+        TextInput:
+            id: password
+            hint_text: "New Password"
+        Label:
+            id: forgot_password_error
+            text: ""
+        Button:
+            text: "Reset Account"
+            on_press: root.reset_account(root.ids.username.text, root.ids.password.text)
         
 <RootWidget>:
     LoginScreen:
@@ -130,3 +149,5 @@
         name: "sign_up_success_screen"
     LoginSuccessScreen:
         name: "login_success_screen"
+    ForgotPasswordScreen:
+        name: "forgot_password_screen"
