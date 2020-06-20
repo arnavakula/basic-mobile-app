@@ -43,10 +43,15 @@
 
 <LoginSuccessScreen>:
     GridLayout:
+        padding: 30, 30
+        spacing: 30, 30
         cols: 1
-        Button:
-            text: "Logout"
-            on_press: root.log_out()
+        RelativeLayout:
+            ImageButton:
+                size_hint: 0.25, 0.25
+                pos_hint: {"center_x": 0.83, "center_y": 0.8}
+                on_press: root.log_out()
+                source: "logout_hover.png" if self.hovered else "logout_nothover.png"
         Label:
             text: "How do you feel?"
         TextInput:
@@ -55,9 +60,13 @@
         Button:
             text: "Enlighten me"
             on_press: root.display_quote(root.ids.feeling.text)
-        Label: 
-            id: quote
-            text: ""
+        ScrollView:
+            Label: 
+                id: quote
+                text: ""
+                text_size: self.width, None
+                size_hint_y: None
+                height: self.texture_size[1]
 
 <SignUpScreen>:
     GridLayout:
@@ -104,11 +113,13 @@
 <SignUpSuccessScreen>:
     GridLayout:
         cols: 1
+        padding: 30, 30
+        spacing: 30, 30
         Label:
             text: "You have signed up successfully!"
         Button:
-            text: "Back to Login"
-            on_press: root.to_login_screen()
+            text: "Go To App"
+            on_press: root.to_login_success_screen()
         
 <RootWidget>:
     LoginScreen:

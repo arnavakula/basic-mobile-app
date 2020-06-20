@@ -6,7 +6,11 @@ from pathlib import Path
 
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.image import Image
 from kivy.uix.screenmanager import Screen, ScreenManager
+
+from hoverable import HoverBehavior
 
 Builder.load_file('design.kv')
  
@@ -16,9 +20,13 @@ class LoginScreen(Screen):
         self.manager.current = 'sign_up_screen'
 
     def login(self, name, pword):
+        name = name.strip()
+        pword = pword.strip()   
+
         with open('users.json', 'r') as f:
             users = json.load(f)
         if name in users.keys() and users[name]['password'] == pword:
+            self.manager.transition.direction = 'left'
             self.manager.current = 'login_success_screen'
         else:
             self.ids.login_error.text = "The username you entered does not match the password."
@@ -31,6 +39,7 @@ class LoginSuccessScreen(Screen):
 
     def display_quote(self, feeling):
         feeling = feeling.lower()
+        feeling = feeling.replace(' ', '')
         valid_feelings = [Path(filename).stem for filename in glob.glob('quotes/*txt')]
         if feeling in valid_feelings:
             with open(f'quotes/{feeling}.txt') as f:
@@ -45,9 +54,16 @@ class SignUpScreen(Screen):
         self.manager.current = 'login_screen'
     def add_user(self, name, pword):
         with open('users.json') as f:
-            users = json.load(f)   
+            users = json.load(f)  
+
+        name = name.strip()
+        pword = pword.strip()
         
-        if name in users:
+        if name == "":
+            self.ids.sign_up_error.text = "Sorry, there is no detected username."
+        elif pword == "":
+            self.ids.sign_up_error.text = "Sorry, there is no detected username."
+        elif name in users:
             self.ids.sign_up_error.text = "Sorry, that username already exists. Please enter another one."
         else:
             users[name] = {'username': name, 'password': pword, 'created': datetime.now().strftime('%m-%d-%Y')}  
@@ -56,12 +72,15 @@ class SignUpScreen(Screen):
             self.manager.current = 'sign_up_success_screen'
 
 class SignUpSuccessScreen(Screen):
-    def to_login_screen(self):
-        self.manager.transition.direction = 'right'
-        self.manager.current = 'login_screen'
+    def to_login_success_screen(self):
+        self.manager.transition.direction = 'left'
+        self.manager.current = 'login_success_screen'
     pass
         
 class RootWidget(ScreenManager):
+    pass
+
+class ImageButton(ButtonBehavior, HoverBehavior, Image):
     pass
 
 class MainApp(App):
