@@ -1,6 +1,5 @@
 import glob
 import json
-import random
 from datetime import datetime
 from pathlib import Path
 
@@ -11,6 +10,7 @@ from kivy.uix.image import Image
 from kivy.uix.screenmanager import Screen, ScreenManager
 
 from hoverable import HoverBehavior
+import secrets
 
 Builder.load_file('design.kv')
  
@@ -46,7 +46,7 @@ class LoginSuccessScreen(Screen):
         if feeling in valid_feelings:
             with open(f'quotes/{feeling}.txt') as f:
                 quotes = f.readlines()
-            self.ids.quote.text = random.choice(quotes)
+            self.ids.quote.text = secrets.SystemRandom().choice(quotes)
         else: 
             self.ids.quote.text = 'Sorry, that is not a valid feeling in this release.'
 
